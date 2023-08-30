@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dog Breed Search</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Dog Breed Search</h1>
+    <a href="">Unfavorite</a>
+    <div class="button"> 
+        <a href="">Favorite</a>
+    </div>
+    <div class="center">
+        <input type="text" id="breedInput" placeholder="Enter a dog breed">
+        <button id="searchButton">Search</button>
+    </div>
+    
+    
+    <div id="imageContainer"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#searchButton').click(function() {
+                var breed = $('#breedInput').val();
+                if (breed !== '') {
+                    fetchImages(breed);
+                }
+            });
+
+            function fetchImages(breed) {
+                var apiKey = 'YOUR_DOG_API_KEY';
+                var apiUrl = `https://api.thedogapi.com/v1/images/search?breed=${breed}&limit=10&api_key=${apiKey}`;
+
+                $.get(apiUrl, function(data) {
+                    displayImages(data);
+                });
+            }
+
+            function displayImages(images) {
+                var imageContainer = $('#imageContainer');
+                imageContainer.empty();
+
+                images.forEach(function(image) {
+                    var imgElement = document.createElement('img');
+                    imgElement.src = image.url;
+                    imgElement.style.maxWidth = '300px';
+                    imgElement.style.margin = '10px';
+                    imageContainer.append(imgElement);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
